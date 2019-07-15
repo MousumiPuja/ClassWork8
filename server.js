@@ -2,7 +2,13 @@ var http = require('http');
 var express = require('express');
 var app = express();
 var server = http.Server(app);
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+
+
+var dummyArticle = {
+  title: "Test article from server",
+  content :"Test content from this article"
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extented:true}))
@@ -28,6 +34,9 @@ app.get('/form' , function(req,res){
   res.sendFile(__dirname+'/form.html')
 })
 
+app.get('/article' , function(req,res){
+  res.render('article.ejs' ,{article: dummyArticle})
+})
 
 
 
