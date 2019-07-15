@@ -3,6 +3,18 @@ var express = require('express');
 var app = express();
 var server = http.Server(app);
 var bodyParser = require('body-parser');
+var mongo = require('mongodb')
+
+var db_url = "mongodb://localhost:27017"
+
+mongo.MongoClient.connect(db_url, {useNewUrlParser:true},
+  function(err,client){
+   if(err){
+     console.log("Could not connect DB")
+   }else{
+     db = client.db('node-cw9')
+   }
+  })
 
 
 var dummyArticle = {
@@ -52,7 +64,14 @@ app.get('/about/second' , function(req,res){
 
 app.post('/article/new', function(req,res){
  console.log(req.body)
- res.send({message:"data received"})
+ db.createCollection('articles' , function(err,collection){
+   console.log(collection)  
+})
+ 
+var collection = db.collection('articles')
+collection.save(req.body)
+
+res.send({message:"data received"})
 
 })
 
